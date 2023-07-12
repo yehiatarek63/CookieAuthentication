@@ -1,0 +1,60 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        <div class="container d-flex justify-content-center align-items-center mt-5">
+            <div class="row">
+                <div class="col">
+                    <div class="card shadow">
+                        <h1 class="card-img-top d-flex justify-content-center pt-3">Sign In</h1>
+                        <div class="card-body">
+                            <form method="post" asp-page-handler="SignIn">
+                                <div class="mb-3">
+                                    <label class="form-label" for="Username">Username</label>
+                                    <input asp-for="Username" class="form-control" type="text" name="Username">
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Password">Password</label>
+                                    <input asp-for="Password" class="form-control" type="password" name="Password">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <button class="btn btn-success d-flex justify-content-center">Login</button>
+                                 @if (TempData["ErrorMessage"] is not null)
+                                 {
+                                    <div class="alert alert-danger mt-3">@TempData["ErrorMessage"]</div>
+                                 }
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container d-flex justify-content-center align-items-center mt-5">
+            <div class="row">
+                <div class="col">
+                    <div class="card shadow">
+                        <h1 class="card-img-top d-flex justify-content-center p-3">Welcome @User.Identity.Name</h1>
+                        <div class="card-body">
+                            <form method="post" asp-page-handler="SignOut">
+                                <button class="btn btn-danger d-flex justify-content-center">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
