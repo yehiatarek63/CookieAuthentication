@@ -12,10 +12,7 @@ namespace CookieAuthentication.Pages;
 [BindProperties]
 public class IndexModel : PageModel
 {
-    [Required]
-    public string Username { get; set; }
-    [Required]
-    public string Password { get; set; }
+    public LoginInput UserLogin { get; set; }
     
 
     public void OnGet()
@@ -25,11 +22,11 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnPostSignIn() { 
         if (ModelState.IsValid)
         {
-            if(Username == "intern" && Password == "summer 2023 july")
+            if(UserLogin.Username == "intern" && UserLogin.Password == "summer 2023 july")
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, Username),
+                    new Claim(ClaimTypes.Name, UserLogin.Username),
                     new Claim(ClaimTypes.Role, "Intern")
                 };
 
@@ -44,9 +41,8 @@ public class IndexModel : PageModel
                 return RedirectToPage();
             }
         }
-        ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-        TempData["ErrorMessage"] = "Invalid Login Attempt";
-        return RedirectToPage();
+        ModelState.AddModelError("", "Invalid Login Attempt");
+        return Page();
     }
 
 
@@ -57,6 +53,12 @@ public class IndexModel : PageModel
     }
 }
 
-
+public class LoginInput
+{
+    [Required]
+    public string Username { get; set; }
+    [Required]
+    public string Password { get; set; }
+}
 
 
